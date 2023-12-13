@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { DeviceListComponent } from './devices/device-list/device-list.component';
+import { DeviceComponent } from './devices/device/device.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DeviceListComponent,
+    DeviceComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    FormsModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
