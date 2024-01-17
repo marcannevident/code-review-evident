@@ -18,43 +18,32 @@ namespace DeviceManagement.Controllers
             _databaseDriver = databaseDriver;
         }
 
-        [HttpGet]
-        public IEnumerable<Device> GetDevices()
-        {
-            return _databaseDriver.listDevices();
-        }
-
         [HttpGet("/DeviceProbes")]
         public IEnumerable<DeviceProbes> GetCompatibleProbes()
         {
             var d = _databaseDriver.listDevices();
 
             var r = new List<DeviceProbes>();
-            foreach (var de in d)
+            foreach (var device in d)
             {
-                var dp = new DeviceProbes
+                var deviceProbes = new DeviceProbes
                 {
-                    Device = de,
+                    Device = device,
                     CompatibleProbes = new List<Probe>(),
                 };
 
-                var p = _databaseDriver.listProbes();
-                foreach (var pr in p)
+                var probes = _databaseDriver.listProbes();
+                foreach (var pr in probes)
                 {
-                    if (!de.Connectors.Any(connector => pr.Connector == connector.Type))
+                    if (!device.Connectors.Any(connector => pr.Connector == connector.Type))
                     {
                         continue;
                     }
 
-                    if (de.SupportedQualityTesting != QualityTestingTypeEnum.Any && de.SupportedQualityTesting != pr.QualityTestingType)
-                    {
-                        continue;
-                    }
-
-                    dp.CompatibleProbes.Add(pr);                    
+                    deviceProbes.CompatibleProbes.Add(pr);                    
                 }
 
-                r.Add(dp);
+                r.Add(deviceProbes);
             }
 
             return r;
